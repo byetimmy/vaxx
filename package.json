@@ -1,0 +1,29 @@
+{
+  "name": "vaxx",
+  "version": "1.2.9",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/cluster.js",
+    "start:app": "node src/app.js",
+    "build": "node build/dist.js",
+    "start:docker": "docker-compose build && docker-compose --env-file .env.dev up"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.882.0",
+    "cheerio": "^1.0.0-rc.5",
+    "cluster": "^0.7.7",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "moment-timezone": "^0.5.33",
+    "os": "^0.1.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.2"
+  },
+  "author": "byetimmy",
+  "license": "",
+  "devDependencies": {
+    "adm-zip": "^0.5.5",
+    "fs-extra": "^9.1.0"
+  }
+}

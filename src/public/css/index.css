@@ -1,0 +1,58 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #EEE;
+    padding: 5px;
+}
+a:visited, a {
+    color: blue;
+}
+h1 {
+    font-size: 1.2em;
+}
+h1 img {
+    float: left;
+    padding-right: 10px;
+}
+h2 {
+    font-size: 1.1em;
+    margin: 5px 0;
+    clear: both;
+}
+h3 {
+    font-size: .9em;
+}
+hr {
+    clear: both;
+    margin: 5px 0;
+}
+table td {
+    padding: 1px 5px;
+    vertical-align: top;
+}
+table td.label {
+    text-align: right;
+    font-weight: bold;
+}
+div.items div.item {
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 3px;
+    float: left;
+    width: 325px;
+    height: 225px;
+}
+div.items div.item.highlight {
+    border: 2px solid #7cd446;
+}
+.hidden {
+    display: none;
+}
+
+#region_float {
+    color: #1ea2d3;
+    position: absolute;
+    left: 120px;
+    font-size: 25px;
+    font-weight: bold;
+}

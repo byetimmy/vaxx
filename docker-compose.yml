@@ -1,0 +1,20 @@
+version: '3'
+services:
+  app:
+    environment:
+      - EMAIL_TYPE
+      - EMAIL_USER
+      - EMAIL_PASS
+      - EMAIL_LIST
+    build: .
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "9000:9000"
+    networks:
+      - vacc_aggr
+    command:
+      npm run start
+networks:
+  vacc_aggr:

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vaxx - Appointment Scanner - </title>
+        <link rel="icon" type="image/png" href="images/favicon.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="index, follow"/>
+        <meta name="description" content="Use this site to easily find vaccination appointments"/>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
+        <link rel="stylesheet" href="css/index.css">
+        <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+        <script src="js/index.js"></script>  
+    </head>
+    <body>
+        <h1>
+            <img src="images/logo.png" alt="Vaxx"/>
+            <div id="region_float"></div>
+        </h1>
+        <h2>"Scanning for appointments so you don't have to..."</h2>
+        <hr/>
+        <h3>Total Available: <span id="total_count"></span></h3>
+        <div>
+            <select name="vaxx" id="vaxx" onChange="filterResults()">
+                <option value="*">-Filter by Vaxx-</option>
+                <option value="Janssen">Janssen</option>
+                <option value="Moderna">Moderna</option>
+                <option value="Pfizer-BioNTech">Pfizer-BioNTech</option>
+            </select>
+        </div>
+        <hr/>
+        <div class="items" id="items"></div>
+        <hr/>
+        <h3>Updated: <span id="updated"></span></h3>
+        <h3>This page will automatically refresh when new appointments are found.</h3>
+        <h3>Data scanned from <a id="base_site" target="_blank" href="#"></h3>
+        <div class="hidden" id="item_template">
+            <div class="item">
+                <table>
+                    <tr>
+                        <td class="label">Date:</td>
+                        <td class="value">{date_avail}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Vaxx:</td>
+                        <td class="value">{offered}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Available:</td>
+                        <td class="value">{count}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Register:</td>
+                        <td class="value"><a target="_blank" href="{url}">Click here</a></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Location:</td>
+                        <td class="value">{location}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Address:</td>
+                        <td class="value"><a target="_blank" href="https://www.google.com/maps/search/{address}">{address}</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <script>
+            main();
+        </script>
+    </body>
+
+</html>
