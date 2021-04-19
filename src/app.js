@@ -41,7 +41,7 @@ async function setItemData() {
     let items = await utils.getVaccItems();
 
     //something errored on the site, just skkip processing
-    if (items.data.length === 0 && items.errors.length > 0) {
+    if (items.data.length < storedResults.length && items.errors.length > 0) {
         return;
     }
 
