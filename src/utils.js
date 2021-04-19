@@ -40,7 +40,11 @@ async function ajax(uri) {
 
 
 async function getVaccItems() {
-    let results = [];
+    
+    let results = {
+        errors: [],
+        data: []
+    };
 
     //VACC
     console.log(`Getting VACC info...`);
@@ -78,7 +82,7 @@ async function getVaccItems() {
                         const offered = massage_($('p:eq(2)', pNode).text()).split(': ')[1].split(' COVID-19 Vaccine')[0];;
 
                         const _pk = `${offered}::${date_avail}::${location}`;
-                        results.push({
+                        results.data.push({
                             count,
                             address,
                             url: buttonHref,
@@ -97,11 +101,12 @@ async function getVaccItems() {
 
         } catch (e) {
             console.log('ERROR:', e);
+            results.errors.push(e);
             doNext = false;
         }
     }
 
-    console.log(`Available VACC Results Found: ${results.length}.`);
+    console.log(`Available VACC Results Found: ${results.data.length}.`);
 
     return Promise.resolve(results);
 }

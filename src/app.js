@@ -38,7 +38,14 @@ async function getItemData() {
 
 async function setItemData() {
 
-    let results = await utils.getVaccItems();
+    let items = await utils.getVaccItems();
+
+    //something errored on the site, just skkip processing
+    if (items.data.length === 0 && items.errors.length > 0) {
+        return;
+    }
+
+    let results = items.data;
 
     let lookup = {};
     let newResults = [];
@@ -54,7 +61,6 @@ async function setItemData() {
         lookup[itm._pk] = itm.count;
     }
 
-    storedLookup = lookup;
 
     if (newResults.length > 0) {
         //send email
@@ -67,9 +73,9 @@ async function setItemData() {
     } else {
         console.log('No new appointments found.  Skipping email.');
     }
-    
-    storedResults = results;
 
+    storedLookup = lookup;
+    storedResults = results;
     storedLastUpdated = new Date().getTime();
 
 }
