@@ -13,6 +13,7 @@
 
     let firstRun = true;
     let refreshInterval = 1;
+    let prevItems = [];
     function updateMainPage() {
         getData(function (results, error) {
             try {
@@ -21,40 +22,43 @@
 
                 } else if (results && results.config) {
                     const items = results.data.items;
-                    const config = results.config;
 
-                    $('#total_count').text(results.data.total);
-                    $('#updated').text(new Date().toLocaleString());
-                    $('#base_site').text(config.base);
-                    $('#base_site')[0].href = config.base;
+                    if (JSON.stringify(items) !== prevItems) {
+                        prevItems = JSON.stringify(items);
+                        
+                        const config = results.config;
 
-                    $('#region_float').text(config.region);
-                    if (firstRun) {
-                        document.title = `${config.region} ${document.title}`;
-                        firstRun = false;
-                    }
+                        $('#total_count').text(results.data.total);
+                        $('#updated').text(new Date().toLocaleString());
+                        $('#base_site').text(config.base);
+                        $('#base_site')[0].href = config.base;
 
-                    const template = $('#item_template').html();
-
-                    const now = new Date().getTime();
-
-                    let newItems = [];
-
-                    if (items.length === 0) {
-                        highlightedItems = {};
-                    }
-                    for (let i = 0; i < items.length; i++) {
-                        const itm = items[i];
-                
-                        let tmp = template;
-                        for (let prop in itm) {
-                            tmp = tmp.replace(new RegExp (`\{${prop}\}`, 'g'), itm[prop]);
+                        $('#region_float').text(config.region);
+                        if (firstRun) {
+                            document.title = `${config.region} ${document.title}`;
+                            firstRun = false;
                         }
 
-                        newItems.push(tmp);
-                    }
+                        const template = $('#item_template').html();
 
-                    $('#items').html(newItems.join(''));
+                        let newItems = [];
+
+                        if (items.length === 0) {
+                            highlightedItems = {};
+                        }
+                        for (let i = 0; i < items.length; i++) {
+                            const itm = items[i];
+                    
+                            let tmp = template;
+                            for (let prop in itm) {
+                                tmp = tmp.replace(new RegExp (`\{${prop}\}`, 'g'), itm[prop]);
+                            }
+
+                            newItems.push(tmp);
+                        }
+
+                        $('#items').html(newItems.join(''));
+                    }
 
                     refreshInterval = config.refresh;
                 }
