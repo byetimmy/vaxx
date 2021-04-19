@@ -76,7 +76,10 @@ async function setItemData() {
 
     storedLookup = lookup;
     storedResults = results;
-    storedLastUpdated = new Date().getTime();
+
+    if (JSON.stringify(storedResults) !== JSON.stringify(results)) {
+        storedLastUpdated = new Date().getTime();
+    }
 
 }
 
