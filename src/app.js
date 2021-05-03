@@ -3,114 +3,38 @@ require('dotenv').config();
 
 const config = require('./config');
 const utils = require('./utils');
-const message = require('./message');
+const store = require('./store');
 const express = require('express');
 const path = require('path');
-const moment = require('moment-timezone');
 const app = express();
 const port = config.PORT;
 const pkg = require('../package.json');
 
-const STATIC = {
-    TEXT: {
-        MAIN: `New Available Openings: {TOTAL_COUNT}
---------
-{ITEMS}
-Data scanned from ${config.BASE_SITE}`,
-        ITEM: `Date: {date_avail}
-Vaxx: {offered}
-Available: {count}
-Register: {url}
-Location: {location}
-Address: {address}
---------
-`
-    }
-};
-
-let storedLookup = {};
-let storedResults = [];
-let storedLastUpdated = new Date().getTime();
 
 async function getItemData() {
-    return storedResults;
+    const results = await store.getResults();
+    return Promise.resolve(results);
 }
 
 async function setItemData() {
 
-    let items = await utils.getVaccItems();
+    const items = await utils.getVaccItems();
+    let results = items.data;
 
-    //something errored on the site, just skkip processing
-    if (items.data.length < storedResults.length && items.errors.length > 0) {
+    const storedResults = await getItemData();
+
+    //something errored on the site, just skip processing
+    if (items.errors.length > 0) {
         return;
     }
 
-    let results = items.data;
-
-    let lookup = {};
-    let newResults = [];
-
-    for (let i = 0; i < results.length; i++) {
-        const itm = results[i];
-
-        //check to see if we need to flag this as new
-        if (!storedLookup[itm._pk] || storedLookup[itm._pk] < itm.count) {
-            newResults.push(itm);
-        }
-
-        lookup[itm._pk] = itm.count;
+    if (results.length === 0 && storedResults.length > 500) {
+        return;
     }
 
 
-    if (newResults.length > 0) {
-        //send email
-        console.log('There are new appointments.  Send email...');
+    await store.setResults(results);
 
-        const output = getOutputText(newResults);
-        
-        message.sendMessage(output);
-
-    } else {
-        console.log('No new appointments found.  Skipping email.');
-    }
-
-    storedLookup = lookup;
-    storedResults = results;
-
-    if (JSON.stringify(storedResults) !== JSON.stringify(results)) {
-        storedLastUpdated = new Date().getTime();
-    }
-
-}
-
-function _getOutput(data, typ) {
-    let output = STATIC[typ].MAIN;
-    
-    let iTotal = 0;
-    let items = [];
-    
-    for (let i = 0; i < data.length; i++) {
-        const itm = data[i];
-
-        iTotal += itm.count;
-
-        let tmp = STATIC[typ].ITEM;
-        for (let prop in itm) {
-            tmp = tmp.replace(new RegExp (`\{${prop}\}`, 'g'), itm[prop]);
-        }
-        items.push(tmp);
-
-    }
-
-    output = output.replace(/\{TOTAL_COUNT\}/g, iTotal);
-    output = output.replace(/\{ITEMS\}/g, items.join(''));
-    output = output.replace(/\{REPORT_DATE\}/g, moment().tz("America/New_York").format('LLL'));
-
-    return output;
-}
-
-function getOutputText(data) {
-    return _getOutput(data, 'TEXT');
 }
 
 function checkForUpdates() {
@@ -118,7 +42,7 @@ function checkForUpdates() {
     console.log('Checking to make sure background process is still running...');
     const now = new Date().getTime();
 
-    if (now - storedLastUpdated > config.RESTART_THREASHOLD * 1000) {
+    if (now - store.getLastUpdated() > config.RESTART_THREASHOLD * 1000) {
         console.log('Background process stopped running.  Restarting...');
 
         //killing the process will force the cluster to start a new worker thread.
@@ -139,7 +63,7 @@ async function main() {
     }
 
     //sleep for a second before going after it
-    setTimeout(main, 1000);
+    setTimeout(main, config.REFRESH * 1000);
 
 }
 
