@@ -2,7 +2,7 @@
 
 const BASE_MATCH = process.env.BASE_MATCH || 'Appointments Available'; // */'Available Appointments';
 const BASE_SITE = process.env.BASE_SITE || 'https://www.vaccinateri.org'; // */'https://prepmod.doh.wa.gov';
-const BASE_URI = process.env.BASE_URI || '/clinic/search?page={page}';
+const BASE_URI = process.env.BASE_URI || '/appointment/en/clinic/search?page={page}';
 const CLUSTER_THREADS = process.env.CLUSTER_THREADS || '1';
 const MIN_AVAIL = process.env.MIN_AVAIL || '1';
 const PORT = process.env.PORT || '9000';
