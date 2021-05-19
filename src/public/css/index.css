@@ -40,7 +40,7 @@ div.items div.item {
     padding: 3px;
     float: left;
     width: 325px;
-    height: 225px;
+    height: 250px;
 }
 div.items div.item.highlight {
     border: 2px solid #7cd446;
