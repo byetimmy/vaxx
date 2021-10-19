@@ -23,10 +23,19 @@
                 } else if (results && results.config) {
                     const items = results.data.items;
 
+                    const config = results.config;
+
                     if (JSON.stringify(items) !== prevItems) {
                         prevItems = JSON.stringify(items);
                         
-                        const config = results.config;
+                        let filter = document.getElementById('vaxx');
+                        let allOptions = [];
+
+                        var trends = document.getElementById('trends'), trend, i;
+                        for (var i = 0; i < filter.options.length; i++){
+                            var option = filter.options[i];
+                            allOptions.push(option.value);
+                          }
 
                         $('#total_count').text(results.data.total);
                         $('#updated').text(new Date().toLocaleString());
@@ -52,6 +61,22 @@
                             let tmp = template;
                             for (let prop in itm) {
                                 tmp = tmp.replace(new RegExp (`\{${prop}\}`, 'g'), itm[prop]);
+                            }
+
+                            // build the list of options in the filter
+                            if (itm.offered) {
+                                const allOffered = itm.offered.split(',');
+
+                                for (let i = 0; i < allOffered.length; i++){
+                                    let val = allOffered[i].trim();
+                                    if (allOptions.indexOf(val) === -1) {
+                                        let opt = document.createElement('option');
+                                        opt.value = val;
+                                        opt.innerHTML = val;
+                                        filter.appendChild(opt);
+                                        allOptions.push(val);
+                                    }
+                                }
                             }
 
                             newItems.push(tmp);
