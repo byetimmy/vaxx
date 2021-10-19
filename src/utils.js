@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 const config = require('./config');
 
 const STATIC = {
-    VACC: {
+    VAXX: {
         URL: `${config.BASE_SITE}${config.BASE_URI}`,
         REFERER: config.BASE_SITE,
         MIN_AVAIL: config.MIN_AVAIL
@@ -27,7 +27,7 @@ async function ajax(uri) {
     const $ = await request({
         uri,
         headers: {
-            'referer': STATIC.VACC.REFERER,
+            'referer': STATIC.VAXX.REFERER,
             'user-agent': STATIC.USERAGENT
         },
         transform: function (body) {
@@ -39,7 +39,7 @@ async function ajax(uri) {
 }
 
 
-async function getVaccItems() {
+async function getVaxxItems() {
     
     let results = {
         errors: [],
@@ -54,7 +54,7 @@ async function getVaccItems() {
 
     while (doNext) {
         try {
-            const url = STATIC.VACC.URL.replace(/\{page\}/gi, idx++);
+            const url = STATIC.VAXX.URL.replace(/\{page\}/gi, idx++);
             const $ = await ajax(url);
 
             const booked = $(`p strong:contains(${config.BASE_MATCH})`);
@@ -66,7 +66,7 @@ async function getVaccItems() {
                 const numBooked = massage_($(`p strong:contains(${config.BASE_MATCH})`, pNode).parent().text());
                 const count = parseInt(numBooked.split(': ')[1], 10);
 
-                if (button && count >= STATIC.VACC.MIN_AVAIL) {
+                if (button && count >= STATIC.VAXX.MIN_AVAIL) {
                     const buttonHref = config.BASE_SITE + $(button).attr('href');
 
                     const $$ = await ajax(buttonHref);
@@ -108,12 +108,12 @@ async function getVaccItems() {
         }
     }
 
-    console.log(`Available VACC Results Found: ${results.data.length}.`);
+    console.log(`Available VAXX Results Found: ${results.data.length}.`);
 
     return Promise.resolve(results);
 }
 
 
 module.exports = {
-    getVaccItems
+    getVaxxItems
 }

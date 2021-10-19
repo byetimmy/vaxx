@@ -5,7 +5,7 @@ const BASE_URI = process.env.BASE_URI || '/appointment/en/clinic/search?page={pa
 const CLUSTER_THREADS = process.env.CLUSTER_THREADS || '1';
 const MATCH_AGE = process.env.MATCH_AGE || 'Age groups served';
 const MATCH_APPT = process.env.MATCH_APPT || 'Appointments Available';
-const MATCH_VAXX = process.env.MATCH_VAXX || 'Vaccinations offered';
+const MATCH_VAXX = process.env.MATCH_VAXX || 'Vaxxinations offered';
 const MIN_AVAIL = process.env.MIN_AVAIL || '1';
 const PORT = process.env.PORT || '9000';
 const REGION = process.env.REGION || 'RI' // */'WA';

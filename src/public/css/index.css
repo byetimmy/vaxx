@@ -41,6 +41,7 @@ div.items div.item {
     float: left;
     width: 325px;
     height: 250px;
+    line-height: 1.3em;
 }
 div.items div.item.highlight {
     border: 2px solid #7cd446;

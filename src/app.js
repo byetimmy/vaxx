@@ -18,7 +18,7 @@ async function getItemData() {
 
 async function setItemData() {
 
-    const items = await utils.getVaccItems();
+    const items = await utils.getVaxxItems();
     let results = items.data;
 
     const storedResults = await getItemData();
