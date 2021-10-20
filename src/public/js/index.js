@@ -111,7 +111,7 @@
 
             if (val === '*' || item.innerHTML.indexOf(val) > -1) {
                 item.className = item.className.replace(/ hidden/g, '');
-                const itemCount = parseInt($('td.count', item)[0].innerHTML);
+                const itemCount = parseInt($('td.count', item)[0].innerHTML, 10);
 
                 if (!isNaN(itemCount)) {
                     count += itemCount;
