@@ -37,7 +37,6 @@
                             allOptions.push(option.value);
                           }
 
-                        $('#total_count').text(results.data.total);
                         $('#updated').text(new Date().toLocaleString());
                         $('#base_site').text(config.base);
                         $('#base_site')[0].href = config.base;
@@ -105,18 +104,26 @@
         const val = sel[sel.selectedIndex].value;
 
         const items = $('div.item');
+        let count = 0;
 
         for (let i = 0; i < items.length; i++) {
             let item = items[i];
 
             if (val === '*' || item.innerHTML.indexOf(val) > -1) {
                 item.className = item.className.replace(/ hidden/g, '');
+                const itemCount = parseInt($('td.count', item)[0].innerHTML);
+
+                if (!isNaN(itemCount)) {
+                    count += itemCount;
+                }
 
             } else if (item.className.indexOf(' hidden') === -1) {
                 item.className += ' hidden';
 
             }
         }
+
+        $('#total_count').text(count);
     }
 
 })(window);
