@@ -47,7 +47,7 @@ async function getVaxxItems() {
     };
 
 
-    console.log(`Getting VAXX info...`);
+    console.log(`Getting info...`);
 
     let idx = 1;
     let doNext = true;
@@ -76,9 +76,16 @@ async function getVaxxItems() {
                     if (!error_message) {
                         //we've got something here.  Add it
                         const loc = massage_($('h2:eq(0)', pNode).text());
-                        const date_avail = loc.split(' on ')[1];
+                        let date_avail = loc.split(' on ')[1];
+                        if (date_avail.indexOf(',') > -1) {
+                            date_avail = (date_avail.substring(date_avail.indexOf(',') + 1)).trim();
+                        }
                         const location = loc.split(' on ')[0];
+
                         const address = massage_($('p:eq(0)', pNode).text());
+                        let city = address.split(',');
+                        city = (city[city.length - 2]).trim();
+
                         const ages = massage_($('p:eq(2)', pNode).text()).split(': ')[1];
                         const offered = massage_($('p:eq(1)', pNode).text()).split(': ')[1].replace(/ COVID\-19 Vaccine/g, '');
 
@@ -86,6 +93,7 @@ async function getVaxxItems() {
                         results.data.push({
                             count,
                             address,
+                            city,
                             ages,
                             url: buttonHref,
                             location,

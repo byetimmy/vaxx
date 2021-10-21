@@ -50,6 +50,10 @@ div.items div.item.highlight {
     display: none;
 }
 
+select.filter {
+    margin-right: 5px;
+}
+
 #region_float {
     color: #1ea2d3;
     position: absolute;

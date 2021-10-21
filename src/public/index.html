@@ -19,16 +19,7 @@
         <h2>"Scanning for appointments so you don't have to..."</h2>
         <hr/>
         <h3>Total Available: <span id="total_count"></span></h3>
-        <div>
-            <select name="vaxx" id="vaxx" onChange="filterResults()">
-                <option value="*">-Filter by Vaxx-</option><!--
-                <option value="Janssen">Janssen</option>
-                <option value="Moderna">Moderna</option>
-                <option value="Pfizer-BioNTech">Pfizer-BioNTech</option>
-                <option value="Influenza (IIV)">Influenza (IIV)</option>
-                <option value="Influenza (LAIV)">Influenza (LAIV)</option>-->
-            </select>
-        </div>
+        <div id="filters"></div>
         <hr/>
         <div class="items" id="items"></div>
         <hr/>
@@ -40,11 +31,11 @@
                 <table>
                     <tr>
                         <td class="label">Date:</td>
-                        <td class="value">{date_avail}</td>
+                        <td class="date_avail value">{date_avail}</td>
                     </tr>
                     <tr>
                         <td class="label">Vaxx:</td>
-                        <td class="value">{offered}</td>
+                        <td class="offered value">{offered}</td>
                     </tr>
                     <tr>
                         <td class="label">Available:</td>
@@ -60,17 +51,21 @@
                     </tr>
                     <tr>
                         <td class="label">Location:</td>
-                        <td class="value">{location}</td>
+                        <td class="location value">{location}</td>
                     </tr>
                     <tr>
                         <td class="label">Address:</td>
                         <td class="value"><a target="_blank" href="https://www.google.com/maps/search/{address}">{address}</a></td>
                     </tr>
+                    <tr class="hidden">
+                        <td class="label">City:</td>
+                        <td class="city value">{city}</td>
+                    </tr>
                 </table>
             </div>
         </div>
         <script>
-            main();
+            init();
         </script>
     </body>
 
