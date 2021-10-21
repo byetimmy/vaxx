@@ -93,8 +93,6 @@
                 }
             }
 
-            //this.pending = [];
-
         };
 
         this.init();
@@ -180,20 +178,6 @@
     }
 
 
-    let firstRun = true;
-    let refreshInterval = 1;
-    let prevItems = [];
-
-    let filters = {};
-    win.init = function() {
-        filters = {
-            'offered': new Filter('f_offered', '*', '-Filter by Vaxx-', 'filters', 'offered', true),
-            'date_avail': new Filter('f_date', '*', '-Filter by Date-', 'filters', 'date_avail', false),
-            'city': new Filter('f_city', '*', '-Filter by City-', 'filters', 'city', false)
-        };
-
-        main();
-    };
 
     function main() {
         getData(function (results, error) {
@@ -260,46 +244,20 @@
     }
 
 
-    win.xfilterResults = function() {
-/*
-        const filter_vaxx = $('#filter_vaxx')[0];
-        const filter_date = $('#filter_date')[0];
-        const filter_loc = $('#filter_loc')[0];
+    let firstRun = true;
+    let refreshInterval = 1;
+    let prevItems = [];
 
-        const val_vaxx = filter_vaxx[filter_vaxx.selectedIndex].value;
-        const val_date = filter_date[filter_date.selectedIndex].value;
-        const val_loc = filter_loc[filter_loc.selectedIndex].value;
+    let filters = {};
+    win.init = function() {
+        filters = {
+            'offered': new Filter('f_offered', '*', '-Filter by Vaxx-', 'filters', 'offered', true),
+            'date_avail': new Filter('f_date', '*', '-Filter by Date-', 'filters', 'date_avail', false),
+            'city': new Filter('f_city', '*', '-Filter by City-', 'filters', 'city', false)
+        };
 
-        const items = $('div.item');
-        let count = 0;
+        main();
+    };
 
-        for (let i = 0; i < items.length; i++) {
-            let item = items[i];
-            const data_vaxx = $('td.vaxx', item)[0].innerHTML;
-            const data_date = $('td.date', item)[0].innerHTML;
-            const data_loc = $('td.loc', item)[0].innerHTML;
-
-            const show_vaxx = (val_vaxx === '*' || data_vaxx.indexOf(val_vaxx) > -1);
-            const show_date = (val_date === '*' || data_date.indexOf(val_date) > -1);
-            const show_loc = (val_loc === '*' || data_loc.indexOf(val_loc) > -1);
-
-            if (show_vaxx && show_date && show_loc) {
-                item.className = item.className.replace(/ hidden/g, '');
-                const itemCount = parseInt($('td.count', item)[0].innerHTML, 10);
-
-                if (!isNaN(itemCount)) {
-                    count += itemCount;
-                }
-
-            } else if (item.className.indexOf(' hidden') === -1) {
-                item.className += ' hidden';
-
-            }
-
-        }
-
-        $('#total_count').text(count);
-        */
-    }
 
 })(window);
