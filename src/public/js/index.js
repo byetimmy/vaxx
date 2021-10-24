@@ -1,4 +1,5 @@
 (function (win) {
+    const $ = win.$;
 
     function Filter(id, val, label, containerId, prop, isMulti) {
         this.id = id;
@@ -216,7 +217,7 @@
                     
                             let tmp = template;
                             for (let prop in itm) {
-                                tmp = tmp.replace(new RegExp (`\{${prop}\}`, 'g'), itm[prop]);
+                                tmp = tmp.replace(new RegExp (`{${prop}}`, 'g'), itm[prop]);
                             }
 
                             //update the filter definitions

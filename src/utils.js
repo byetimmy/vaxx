@@ -18,7 +18,7 @@ const massage_ = function (txt) {
     txt = txt.replace(/\n/g, '');
     txt = txt.replace(/\t/g, ' ');
     while (txt.indexOf('  ') > -1) {
-        txt = txt.replace(/  /g, ' ');
+        txt = txt.replace(/ {2}/g, ' ');
     }
     return txt.trim();
 }
@@ -87,7 +87,7 @@ async function getVaxxItems() {
                         city = (city[city.length - 2]).trim();
 
                         const ages = massage_($('p:eq(2)', pNode).text()).split(': ')[1];
-                        const offered = massage_($('p:eq(1)', pNode).text()).split(': ')[1].replace(/ COVID\-19 Vaccine/g, '');
+                        const offered = massage_($('p:eq(1)', pNode).text()).split(': ')[1].replace(/ COVID-19 Vaccine/g, '');
 
                         const _pk = `${offered}::${date_avail}::${location}`;
                         results.data.push({

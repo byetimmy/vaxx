@@ -1,12 +1,14 @@
 {
   "name": "vaxx",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/cluster.js",
     "start:app": "node src/app.js",
-    "build": "node build/dist.js",
+    "build": "npm test && node build/dist.js",
+    "lint": "eslint src",
+    "test": "npm run lint",
     "start:docker": "docker-compose build && docker-compose --env-file .env.dev up"
   },
   "dependencies": {
@@ -22,6 +24,7 @@
   "license": "",
   "devDependencies": {
     "adm-zip": "^0.5.5",
+    "eslint": "^8.1.0",
     "fs-extra": "^9.1.0"
   }
 }
