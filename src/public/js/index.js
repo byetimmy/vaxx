@@ -11,6 +11,8 @@
 
         this.pending = [];
 
+        this.options = [];
+
         const this_ = this;
 
         this.init = () => {
@@ -70,7 +72,7 @@
             let existing = [];
 
             //if we have options that aren't pending, remove them
-            for (let i = el.options.length - 1; i >= 1; i--){
+            for (let i = el.options.length - 1; i >= 1; i--) {
                 const option = el.options[i];
                 if (this.pending.indexOf(option.value) === -1) {
                     if (el.selectedIndex === i) {
@@ -82,16 +84,34 @@
                 }
             }
 
-
+            // insert the pending option into the filter in alpha order
             for (let i = 0; i < this.pending.length; i++) {
-                const optVal = this.pending[i];
-                if (existing.indexOf(optVal) === -1) {
-                    const opt = document.createElement('option');
+                const pendingVal = this.pending[i];
 
-                    opt.value = optVal;
-                    opt.innerHTML = optVal;
-                    el.appendChild(opt);
+                if (existing.indexOf(pendingVal) === -1) {
+                    const pendingOpt = document.createElement('option');
+
+                    pendingOpt.value = pendingVal;
+                    pendingOpt.innerHTML = pendingVal;
+
+                    let isAdded = false;
+        
+                    for (let j = 1; !isAdded && j < el.options.length; j++) {
+                        const existingOpt = el.options[j];
+                        if (pendingVal < existingOpt.value) {
+                            el.insertBefore(pendingOpt, existingOpt);
+                            isAdded = true;
+                        }
+                    }
+
+                    if (!isAdded) {
+                        el.appendChild(pendingOpt);
+                    }
+
+
                 }
+                
+
             }
 
         };
