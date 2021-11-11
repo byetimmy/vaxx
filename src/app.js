@@ -67,10 +67,10 @@ async function main() {
 
 }
 
+// most urls should resolve to the public html
 app.use('/', express.static(path.join(__dirname, 'public')));
 
-app.use('/index.html', express.static(path.join(__dirname, 'public', 'index.html')))
-
+// if they want data, give them data!
 app.get('/data', async (req, res) => {
     
     const refresh = config.REFRESH;
