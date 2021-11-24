@@ -1,13 +1,14 @@
 (function (win) {
     const $ = win.$;
 
-    function Filter(id, val, label, containerId, prop, isMulti) {
+    function Filter(id, val, label, containerId, prop, isMulti, isDate) {
         this.id = id;
         this.label = label;
         this.val = val
         this.containerId = containerId;
         this.prop = prop;
         this.isMulti = !!isMulti;
+        this.isDate = !!isDate;
 
         this.pending = [];
 
@@ -25,7 +26,7 @@
                 sel.name = this.id;
                 sel.className = 'filter';
 
-                sel.onchange = function() {
+                sel.onchange = function () {
                     this_.val = this[this.selectedIndex].value;
                     filterResults();
                 };
@@ -84,7 +85,7 @@
                 }
             }
 
-            // insert the pending option into the filter in alpha order
+            // insert the pending option into the filter in alpha or date sort order
             for (let i = 0; i < this.pending.length; i++) {
                 const pendingVal = this.pending[i];
 
@@ -95,12 +96,19 @@
                     pendingOpt.innerHTML = pendingVal;
 
                     let isAdded = false;
-        
+
                     for (let j = 1; !isAdded && j < el.options.length; j++) {
                         const existingOpt = el.options[j];
-                        if (pendingVal < existingOpt.value) {
+                        if (this.isDate) {
+                            if (new Date(pendingVal) < new Date(existingOpt.value)) {
+                                el.insertBefore(pendingOpt, existingOpt);
+                                isAdded = true;
+                            }
+
+                        } else if (pendingVal < existingOpt.value) {
                             el.insertBefore(pendingOpt, existingOpt);
                             isAdded = true;
+
                         }
                     }
 
@@ -110,7 +118,7 @@
 
 
                 }
-                
+
 
             }
 
@@ -189,10 +197,10 @@
     function getData(callback) {
         $.ajax({
             url: '/data',
-            success: function(results) {
+            success: function (results) {
                 callback(results);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 callback(null, error);
             }
         });
@@ -234,10 +242,10 @@
 
                         for (let i = 0; i < items.length; i++) {
                             const itm = items[i];
-                    
+
                             let tmp = template;
                             for (let prop in itm) {
-                                tmp = tmp.replace(new RegExp (`{${prop}}`, 'g'), itm[prop]);
+                                tmp = tmp.replace(new RegExp(`{${prop}}`, 'g'), itm[prop]);
                             }
 
                             //update the filter definitions
@@ -254,7 +262,7 @@
                     renderFilters();
                 }
 
-            } catch (e){
+            } catch (e) {
                 console.error('client error: ', e);
             }
 
@@ -270,11 +278,11 @@
     let prevItems = [];
 
     let filters = {};
-    win.init = function() {
+    win.init = function () {
         filters = {
-            'offered': new Filter('f_offered', '*', '-Filter by Vaxx-', 'filters', 'offered', true),
-            'date_avail': new Filter('f_date', '*', '-Filter by Date-', 'filters', 'date_avail', false),
-            'city': new Filter('f_city', '*', '-Filter by City-', 'filters', 'city', false)
+            'offered': new Filter('f_offered', '*', '-Filter by Vaxx-', 'filters', 'offered', true, false),
+            'date_avail': new Filter('f_date', '*', '-Filter by Date-', 'filters', 'date_avail', false, true),
+            'city': new Filter('f_city', '*', '-Filter by City-', 'filters', 'city', false, false)
         };
 
         main();
